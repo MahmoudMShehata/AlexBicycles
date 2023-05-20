@@ -1,0 +1,12 @@
+<div class="flex flex-col justify-center items-center w-full">
+  <h3 class="font-bold text-3xl">About the <%= @bicycle.model %></h3>
+  <p class= "font-bold text-lg"><%= @bicycle.description %>
+  <section class="flex flex-row justify-around w-2/3">
+    <div class="w-1/2 h-1/2"><%= image_tag(@bicycle.image) if @bicycle.image %></div>
+    <div class="justify-center items-center pl-4 pt-10">
+      <div class= "font-bold text-lg">Style: <%= @bicycle.style.capitalize %></div>
+      <div class= "font-bold text-lg">Color: <%= @bicycle.color.capitalize %></div>
+      <div class= "font-bold text-lg">Price: <%= @bicycle.price.round(2) %>$</div>
+    </div>
+  <section>
+</div>
