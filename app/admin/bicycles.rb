@@ -3,23 +3,36 @@ ActiveAdmin.register Bicycle do
 
   controller do 
     def create
-      # debugger
       if bicycle_params[:model].include?("cat")
-        response        = HTTParty.get("https://catfact.ninja/fact")
-        cat_fact_length = JSON.parse(response.body)["length"]
-        cat_pricing     = (bicycle_params[:price].to_i * cat_fact_length) / 5
-        @bicycle        = Bicycle.create!(bicycle_params.merge!(price: cat_pricing))
+        begin
+          response        = HTTParty.get("https://catfact.ninja/fact")
+          cat_fact_length = JSON.parse(response.body)["length"]
+        rescue SocketError
+          cat_fact_length = 99 
+        end
+
+        begin
+          cat_pricing     = (bicycle_params[:price].to_i * cat_fact_length) / 5
+          @bicycle        = Bicycle.create!(bicycle_params.merge!(price: cat_pricing))
+          redirect_to admin_bicycles_path, notice: "#{@bicycle.model} bicycle has been added to the database successfully!"
+        rescue ActiveRecord::RecordInvalid
+          redirect_back_or_to admin_bicycles_path, alert: "Bicycle Model, Style & price must exist."
+        end
       else
-        @bicycle = Bicycle.create!(bicycle_params)
+
+        begin
+          @bicycle = Bicycle.create!(bicycle_params)
+          redirect_to admin_bicycles_path, notice: "#{@bicycle.model} bicycle has been added to the database successfully!"
+        rescue ActiveRecord::RecordInvalid
+          redirect_back_or_to admin_bicycles_path, alert: "Bicycle Model, Style & price must exist."
+        end
       end
-      redirect_to admin_bicycles_path, notice: "#{@bicycle.model} bicycle has been added to the database successfully!"
     end
   
     private
   
     def bicycle_params
-      params.require(:bicycle)
-            .permit(:model, :style, :price, :color, :description)
+      params.require(:bicycle).permit(:model, :style, :price, :color, :description, :image)
     end
   end
 

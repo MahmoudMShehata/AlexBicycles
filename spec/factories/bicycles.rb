@@ -8,12 +8,12 @@ FactoryBot.define do
     style       { ['off-road', 'kids-bike', 'electric-bike'].sample }
     description { 'This is a fake description for a fake bike which can run faster than a nigga seen around by the cops selling weed.' }
 
-    trait :with_image do
-      after :create do |bicycle|
-        file_name = 'bike.jpg'
-        file_path = Rails.root.join('spec', 'fixtures', file_name)
-        bicycle.image.attach(io: File.open(file_path), filename: file_name)
-      end
+    after(:build) do |bicycle|
+      bicycle.image.attach(
+        io: File.open(Rails.root.join('spec', 'fixtures', 'bike.jpg')),
+        filename: 'bike.jpg',
+        content_type: 'image/jpeg'
+      )
     end
   end
 end

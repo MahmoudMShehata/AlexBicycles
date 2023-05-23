@@ -1,24 +1,30 @@
-# README
+******************************** Welcome to AlexCycle ********************************************
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version : 2.6.5
 
-* System dependencies
+* Rails version : 7.0.4.3
 
-* Configuration
+* Configuration : bundle
 
-* Database creation
+* Database creation : 1) rails db:create 2) rails db:seed
 
-* Database initialization
+* How to run the test suite : bundle exec rspec
 
-* How to run the test suite
+Simple as that, and you're good to go 🙌
 
-* Services (job queues, cache servers, search engines, etc.)
+The app contains all the necessary requirements (sorry for the poor UI, time factor wasn't in my favor)
 
-* Deployment instructions
+The only issue is that 2-3 tests might fail because they render the index and show views when testing the bicycles_controller, and those views trigger this error 👇🏻
 
-* ...
+`Can't resolve image into URL: undefined method `persisted?' for nil:NilClass`
+
+P.S : you can find a file named "telegram_bot.rb" inside the /app/ directory .. I was trying to make it on the last day but also, time wasn't in my favor 
+
+Don't hesitate to ask me about anything that's unclear.
+
+

@@ -12,10 +12,4 @@ class BicyclesController < ApplicationController
   def show
     @bicycle = Bicycle.find(params[:id])
   end
-
-  # private
-
-  # def filter_params
-  #   params.permit(:model, :style, :price)
-  # end
 end

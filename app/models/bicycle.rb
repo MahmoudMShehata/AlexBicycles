@@ -1,5 +1,9 @@
+require 'telegram/bot'
+
 class Bicycle < ApplicationRecord
   has_one_attached :image
+  validates :model, :style, presence: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def self.filter(model, style, min_price, max_price)
     style == "all" ? style = nil : style

@@ -1,28 +1,29 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
+require 'requests_helper'
 
 RSpec.describe BicyclesController, type: :request do
   let(:signed_in_user) { FactoryBot.create(:user) }
-  let!(:bicycle) { FactoryBot.create(:bicycle) }
-  
-  before do
-    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(signed_in_user)
-  end
+  let(:choosen_bicycle) { FactoryBot.create(:bicycle) }
 
   describe 'GET #index' do
-    context 'not authenticated' do
-      before { get "/bicycles/" }
-      it { debugger }
-      it { expect(response).to have_http_status(:unauthorized) }
-      
-    end
+    it 'returns all bicycles' do
+      @bicycles = [FactoryBot.build_stubbed(:bicycle)]
+      allow(Bicycle).to receive(:all).and_return(@bicycles)
+      login(signed_in_user)
 
-    # context 'successful fetch' do
-    #   before { get "/bicycles/" }
-      
-    #   it { debugger }
-    #   it { expect(response).to have_http_status(:ok) }
-    # end
+      get bicycles_path
+
+      expect(response).to be_successful
+      expect(assigns(:bicycles)).to match_array(@bicycles)
+    end
+  end
+
+  describe 'GET #show' do
+    it 'returns a selected bicycle' do
+      login(signed_in_user)
+      get "/bicycles/#{choosen_bicycle.id}"
+
+      expect(response).to be_successful
+    end
   end
 end
