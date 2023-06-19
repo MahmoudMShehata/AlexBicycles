@@ -7,6 +7,7 @@
           <div>Model : <%= bicycle.model.capitalize %></div>
           <div>Style : <%= bicycle.style.capitalize %></div>
           <div>Price : <%= bicycle.price.round(2) %>$</div>
+          <div>Visits : <%= bicycle.visits.count %></div>
         </div>
       </a>
     <% end %>

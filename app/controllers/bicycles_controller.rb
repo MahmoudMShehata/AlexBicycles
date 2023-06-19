@@ -11,5 +11,6 @@ class BicyclesController < ApplicationController
 
   def show
     @bicycle = Bicycle.find(params[:id])
+    @visit = Visit.create!(user: current_user, bicycle: @bicycle)
   end
 end
