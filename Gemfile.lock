@@ -218,12 +218,12 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.9)
+    nio4r (2.7.5)
     nokogiri (1.14.4-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     public_suffix (5.0.1)
-    puma (5.6.5)
+    puma (8.0.2)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.7)
@@ -371,7 +371,7 @@ DEPENDENCIES
   httparty (~> 0.21.0)
   importmap-rails
   jbuilder
-  puma (~> 5.0)
+  puma (~> 8.0)
   rails (~> 7.0.4, >= 7.0.4.3)
   rails-controller-testing
   rb-readline
@@ -394,4 +394,4 @@ RUBY VERSION
    ruby 3.0.6p216
 
 BUNDLED WITH
-   2.4.12
+   2.3.7
