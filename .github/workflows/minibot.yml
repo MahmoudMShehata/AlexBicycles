@@ -1,0 +1,52 @@
+# Runs minibot (github.com/MahmoudMShehata/minibot) against this repo.
+name: minibot
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      security_only:
+        description: "Only update vulnerable dependencies"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: minibot
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out this app
+        uses: actions/checkout@v4
+
+      - name: Check out minibot
+        uses: actions/checkout@v4
+        with:
+          repository: MahmoudMShehata/minibot
+          path: .minibot
+
+      # Bundler only resolves under the Ruby the Gemfile pins,
+      # so run minibot on the app's Ruby, not on minibot's.
+      - name: Read the app's Ruby version
+        id: ruby
+        run: echo "version=$(cat .ruby-version)" >> "$GITHUB_OUTPUT"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
+          working-directory: .minibot
+          bundler-cache: true
+
+      - name: Run minibot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUNDLE_GEMFILE: ${{ github.workspace }}/.minibot/Gemfile
+        run: >
+          bundle exec ruby .minibot/bin/minibot
+          --repo "${{ github.repository }}"
+          --local .
+          ${{ inputs.security_only && '--security-only' || '' }}
